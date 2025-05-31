@@ -11,13 +11,14 @@
         integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.22.0/dist/sweetalert2.min.css" rel="stylesheet">
+
     <link rel="stylesheet" href="./css/style.css">
     <title>CRUD E-Commerce</title>
 </head>
 
 <body>
     <header>
-        <nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
+        <nav class="navbar navbar-expand-lg bg-secondary-subtle" data-bs-theme="dark">
             <div class="container">
                 <a class="navbar-brand" href="#">Rolling Shoes</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01"
@@ -29,78 +30,125 @@
                         <li class="nav-item">
                             <a class="nav-link active" href="./index.html">Inicio</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Productos</a>
+                        </li>
                     </ul>
                 </div>
             </div>
         </nav>
     </header>
     <main class="container">
-        <h1 class="text-center text-primary my-3">CRUD Productos</h1>
+        <div class="d-flex justify-content-between my-4">
+            <h2 class="text-dark display-4 fw-bold">CRUD de Productos 👟</h2>
+            <button class="btn btn-secondary btn-lg" id="btnAgregar">
+                <i class="bi bi-plus-circle"></i> Agregar
+            </button>
+        </div>
+        <!-- Lista de productos -->
+        <section class="table-responsive container py-3">
+            <table class="table table-striped table-hover table-shadow rounded overflow-hidden">
+                <thead>
+                    <tr class="fs-5">
+                        <th scope="col">#</th>
+                        <th scope="col">Marca</th>
+                        <th scope="col">Modelo</th>
+                        <th scope="col">Talle</th>
+                        <th scope="col">Precio</th>
+                        <th scope="col">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="tablaProductos">
+                    <!-- Se arma en js -->
 
-        <form class="container py-3 border border-danger">
-            <div class="row g-3">
-                <div class="col-sm-6 col-lg-4">
-                    <select class="form-select mb-3" aria-label="Default select categoria" id="categoria">
-                        <option value="" selected>Seleccione Categoria</option>
-                        <option value="Bebes">Bebes</option>
-                        <option value="Niños/as">Niños/as</option>
-                        <option value="Hombre">Hombre</option>
-                        <option value="Mujer">Mujer</option>
-                    </select>
-                </div>
+                </tbody>
 
-                <div class="col-sm-6 col-lg-4">
-                    <select class="form-select mb-3" aria-label="Default select marca" id="marca">
-                        <option value="" selected>Seleccione Marca</option>
-                        <option value="Adidas">Adidas</option>
-                        <option value="Nike">Nike</option>
-                        <option value="Convers">Convers</option>
-                        <option value="Vans">Vans</option>
-                        <option value="New Balance">New Balance</option>
-                    </select>
-                </div>
+            </table>
+        </section>
 
-                <div class="col-sm col-lg-4">
-                    <input type="text" class="form-control mb-3" id="modelo" placeholder="Modelo" aria-label="modelo">
+
+
+
+        <!-- modal productos  -->
+        <div class="modal fade" id="modalCrearProducto" tabindex="-1" aria-labelledby="modalCrearPelicula"
+            aria-hidden="true">
+            <div class="modal-dialog modal-lg"> <!-- 👈 Modal grande -->
+                <div class="modal-content">
+                    <div class="modal-header bg-body-tertiary">
+                        <h2 class="modal-title fs-5 text-warning">Crear/Modificar Artículo</h2>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form class="container py-3 mb-5">
+                        <div class="row g-3">
+                            <div class="col-sm-6 col-lg-6">
+                                <select class="form-select mb-3" aria-label="Default select categoria" id="categoria">
+                                    <option value="" selected>Seleccione Categoria</option>
+                                    <option value="Bebes">Bebes</option>
+                                    <option value="Niños/as">Niños/as</option>
+                                    <option value="Hombre">Hombre</option>
+                                    <option value="Mujer">Mujer</option>
+                                </select>
+                            </div>
+
+                            <div class="col-sm-6 col-lg-6">
+                                <select class="form-select mb-3" aria-label="Default select marca" id="marca">
+                                    <option value="" selected>Seleccione Marca</option>
+                                    <option value="Adidas">Adidas</option>
+                                    <option value="Nike">Nike</option>
+                                    <option value="Convers">Convers</option>
+                                    <option value="Vans">Vans</option>
+                                    <option value="New Balance">New Balance</option>
+                                </select>
+                            </div>
+
+                        </div>
+                        <div class="col-sm">
+                            <input type="text" class="form-control mb-3" id="modelo" placeholder="Modelo"
+                                aria-label="modelo">
+                        </div>
+
+                        <div class="col-sm">
+                            <textarea class="form-control mb-3" placeholder="Descripción del Producto" id="descripcion"
+                                row="3" maxlength="250"></textarea>
+                        </div>
+
+                        <div class="row g-3">
+                            <div class="col-sm">
+                                <input type="text" class="form-control mb-3" id="color" placeholder="color"
+                                    aria-label="color">
+                            </div>
+                            <div class="col-sm">
+                                <input type="number" class="form-control mb-3" id="talle" placeholder="Talle"
+                                    aria-label="talle" minlength="30">
+
+                            </div>
+                            <div class="col-sm">
+                                <input type="number" class="form-control mb-3" id="precio" placeholder="Precio"
+                                    aria-label="precio">
+                            </div>
+                        </div>
+                        <div class="col-sm">
+                            <input type="text" class="form-control mb-3" id="imagen" placeholder="ej: http://image.jpg"
+                                aria-label="Imágen">
+                        </div>
+
+                        <div class="text-center ">
+                            <button type="submit" class="btn btn-warning">Guardar</button>
+                        </div>
+                    </form>
                 </div>
             </div>
-
-            <div class="col-sm">
-                <textarea class="form-control mb-3" placeholder="Descripción del Producto" id="descripcion" row="3"
-                    maxlength="250"></textarea>
-            </div>
-
-            <div class="row g-3">
-                <div class="col-sm">
-                    <input type="text" class="form-control mb-3" id="color" placeholder="color" aria-label="color">
-                </div>
-                <div class="col-sm">
-                    <input type="number" class="form-control mb-3" id="talle" placeholder="Talle" aria-label="talle"
-                        minlength="30">
-
-                </div>
-                <div class="col-sm">
-                    <input type="number" class="form-control mb-3" id="precio" placeholder="Precio" aria-label="precio">
-                </div>
-            </div>
-            <div class="col-sm">
-                <input type="text" class="form-control mb-3" id="imagen" placeholder="ej: http://image.jpg"
-                    aria-label="Imágen">
-            </div>
-
-            <div class="text-center ">
-            <button type="submit" class="btn btn-warning">Guardar</button>
-            </div>
-
-        </form>
-
+        </div>
+        <!-- ----- fin Modal crear contaco ---- -->
 
     </main>
     <footer></footer>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO"
         crossorigin="anonymous"></script>
-    <script src="./js/app.js"></script>
+
+        <!-- para usar import clase, tiene q ser tipo module -->
+    <script src="./js/app.js" type="module"></script>
 </body>
 
 </html>

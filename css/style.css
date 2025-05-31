@@ -5,16 +5,24 @@ body {
     display: flex;
     flex-direction: column;
 
-     /* background-image: url("../img/pexels-frank-cone-140140-3279307.jpg"); */
+     background-image: url("../img/fondoPared.jpg");
     /* Ruta de la imagen */
-    /* background-size: cover; */
+    background-size: cover;
     /* Ajusta la imagen para cubrir todo el área */
-    /* background-position: center; */
+    background-position: center;
     /* Centra la imagen */
-    /* background-repeat: no-repeat; */
+    background-repeat: no-repeat;
     /* Evita que la imagen se repita */
 }
 
 main {
   flex-grow: 1;
+}
+
+form{
+  background-color: rgb(201, 200, 187) ;
+}
+
+.colorTitulos{
+  color: #5483b3;
 }
