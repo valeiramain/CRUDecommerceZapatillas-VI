@@ -2,7 +2,7 @@
 import Producto from "./classProducto.js"
 
 // ABRIR FORMULARIO PARA LLENAR
-function abrirModalProducto(){
+function abrirModalProducto() {
     console.log('en crear producto')
     const modalCrearProducto = new bootstrap.Modal(document.getElementById('modalCrearProducto'));
     // limpiarFormulario()
@@ -15,7 +15,7 @@ function crearProducto() {
     //1- traer todos los datos del formulario validados
 
     //2- crear objeto producto
-    const nuevoProducto = new Producto(inputCategoria.value, inputMarca.value,  inputModelo.value, inputDescripcion.value, inputColor.value, inputTalle.value, inputPrecio.value, inputImagen.value)
+    const nuevoProducto = new Producto(inputCategoria.value, inputMarca.value, inputModelo.value, inputDescripcion.value, inputColor.value, inputTalle.value, inputPrecio.value, inputImagen.value)
 
     console.log(nuevoProducto)
 
@@ -33,11 +33,11 @@ function crearProducto() {
     dibujarFila(nuevoProducto, ecommerce.length)
 
     // mostrar el mensaje al usuario que se agregó producto correctamente
-    // Swal.fire({
-    //     title: "Pelicula Creada!",
-    //     text: `El Pelicula fue creada correctamente!`,
-    //     icon: "success"
-    // });
+    Swal.fire({
+        title: "Pelicula Creada!",
+        text: `El Pelicula fue creada correctamente!`,
+        icon: "success"
+    });
 }
 
 //guardar en LOCALSTORAGE
@@ -52,8 +52,6 @@ function limpiarFormulario() {
 
 //dibujar la tabla con los productos del array ecommerce
 function dibujarFila(producto, index) {
-    console.log('en dibujar tabla')
-    console.log(producto)
     tablaProductos.innerHTML += `
                     <tr>
                         <th scope="row">${index}</th>
@@ -89,6 +87,55 @@ function cargaDatosEcommerce() {
     }
 }
 
+// todos los botones de la tabla se trabajas con el objeto WINDOW. (no con function)
+//BORRAR producto
+window.eliminarProducto = (id) => {
+    Swal.fire({
+        title: "Estas por eliminar un Producto",
+        text: "No se podrá revertir este paso!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Borrar",
+        cancelButtonText: "Salir",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            //1- buscar en el array ecommerce el producto a borrar por ID
+            const posicionProducto = ecommerce.findIndex((producto) => producto.id === id)
+
+            //2- borrar del array
+            ecommerce.splice(posicionProducto, 1)
+
+            //3- actualizar local storage
+            guardarEnLocalStorage()
+
+            //4- actualizar la tabla de producos de pantalla. Ingreso al tr del tbody para borrarlo de la tabla
+            // tablaProductos es tbody, tablaProductos.childen[posicionProducto] es el tr a eliminar
+            tablaProductos.removeChild(tablaProductos.childen[posicionProducto])
+
+            //5- reenumerar las filas de la talbla en pantalla
+            reasignarIndices()
+
+            //6- cartel de producto eliminado
+            Swal.fire({
+                title: "Producto Borrado!",
+                text: "El producto ha sido borrado exitosamente.",
+                icon: "success"
+            });
+        }
+    });
+}
+
+
+// cuando se elimina un elemento, hay que volver a ordenar los numeros de fila
+function reasignarIndices() {
+    const filas = tablaProductos.querySelectorAll("tr");
+    filas.forEach((fila, index) => {
+        fila.querySelector("th").textContent = index + 1;
+    });
+}
+
 
 
 
@@ -117,13 +164,14 @@ let idProducto = null; //vacio
 
 
 btnAgregarProducto.addEventListener('click', abrirModalProducto);
-formularioCrearProducto.addEventListener('submit',(e) => {
-     e.preventDefault();
-      if (creandoProducto) {
+
+formularioCrearProducto.addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (creandoProducto) {
         crearProducto()
-      }else{
+    } else {
         // modificar producto
-      }  
+    }
 })
 
 //carga datos en pantalla si existen en el localstorage
